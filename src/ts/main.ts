@@ -1,3 +1,9 @@
 import { stdout } from 'process';
+import { createServer } from "http";
+import "dotenv/config";
 
-stdout.write('HELLO!!!');
+const PORT = process.env.PORT;
+
+const server = createServer();
+
+server.listen(PORT, () => stdout.write(`The server was started on the port ${PORT}.`))
