@@ -9,8 +9,12 @@ export default {
   entry: path.join(__dirname, "src/js/main.js"),
   output: {
     path: path.join(__dirname, "dist/"),
-    filename: "server.js"
+    filename: "server.js",
+    chunkFormat: "module",
   },
-  target: "node",
+  target: "node-webkit",
+  experiments: {
+    outputModule: true,
+  },
   plugins: []
 };

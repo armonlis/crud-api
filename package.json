@@ -5,9 +5,8 @@
   "main": "./src/js/main.js",
   "type": "module",
   "scripts": {
-    "start": "tsc --watch & nodemon",
-    "compile": "tsc",
-    "build": "webpack",
+    "start:dev": "tsc --watch & nodemon",
+    "start:prod": "tsc && eslint --fix ./src/ts/**/* && webpack && node ./dist/server.js",
     "lint": "eslint --fix ./src/ts/**/*"
   },
   "repository": {
@@ -31,6 +30,7 @@
     "webpack-cli": "^4.10.0"
   },
   "dependencies": {
+    "dotenv": "^16.0.1",
     "uuid": "^8.3.2"
   }
 }
