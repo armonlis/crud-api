@@ -1,72 +1,80 @@
-import { v4 as uuid } from "uuid";
-import { stdout } from "process";
-
-type UsersMethods = {
-  addUser: (user: IAddedUser) => IUser,
-  getUsers: () => IUser[],
-  getUser: (id: IUser["id"]) => IUser,
-  deleteUser: (id: IUser["id"]) => void,
-  updateUser: (id: IUser["id"], newData: IUpdatedUser) => IUser;
-  isExist: (id: IUser["id"]) => boolean;
-};
+import { v4 as uuid } from 'uuid';
+import { stdout } from 'process';
 
 interface IUpdatedUser {
     username?: string,
     age?: number,
     hobbies?: string[]
-  };
+  }
 
 interface IAddedUser {
   username: string,
   age: number,
   hobbies: string[]
-};
+}
 
 interface IUser extends IAddedUser {
   id: string
 }
 
-export function createUsersStorage(): UsersMethods  {
-  if (this.__isCreated) { stdout.write("The users data base has allready created."); return; }
-  this.__isCreated = true;
+type UsersMethods = {
+  addUser: (user: IAddedUser) => IUser,
+  getUsers: () => IUser[],
+  getUser: (id: IUser['id']) => IUser,
+  deleteUser: (id: IUser['id']) => void,
+  updateUser: (id: IUser['id'], newData: IUpdatedUser) => IUser;
+  isExist: (id: IUser['id']) => boolean;
+};
+
+export default function createUsersStorage(): UsersMethods {
+  if (createUsersStorage._isCreated) { stdout.write('\nThe users data base has been allready created.\n'); return; }
+  createUsersStorage._isCreated = true;
 
   const users: IUser[] = [];
+  let lastCheckedUser: IUser | null = null;
+
+  stdout.write('\nThe users data base was created succesfully.\n');
 
   function addUser(user: IAddedUser): IUser {
     const id = uuid();
     const { username, age, hobbies } = user;
-    users.push({id, username, age, hobbies});
-    return {id, username, age, hobbies};
-  };
+    users.push({
+      id, username, age, hobbies,
+    });
+    return {
+      id, username, age, hobbies,
+    };
+  }
 
   function getUsers(): IUser[] {
     return [...users];
-  };
+  }
 
-  function getUser(id: IUser["id"]): IUser {
-    const user = users.find(user => user.id === id);
-    return { ...user };
-  };
+  function getUser(id: IUser['id']): IUser {
+    return lastCheckedUser?.id === id ? {...lastCheckedUser} : { ...users.find((user) => user.id === id) };
+  }
 
-  function deleteUser(id: IUser["id"]): IUser {
-    const user = users.find(user => user.id === id);
-    users.splice(users.findIndex(user => user.id === id), 1);
-    return { ...user };  
-  };
+  function deleteUser(id: IUser['id']): IUser {
+    users.splice(users.findIndex((user) => user.id === id), 1);
+    return lastCheckedUser?.id === id ? {...lastCheckedUser} : { ...users.find((user) => user.id === id) };
+  }
 
-  function updateUser(id: IUser["id"], newData: IUpdatedUser): IUser {
-    const user = users.find(user => user.id === id);
+  function updateUser(id: IUser['id'], newData: IUpdatedUser): IUser {
+    const user = users.find((user) => user.id === id);
     user.username = newData.username ?? user.username;
     user.age = newData.age ?? user.age;
     user.hobbies = newData.hobbies ?? user.hobbies;
-    return {...user};
-  };
+    return { ...user };
+  }
 
-  function isExist(id: IUser["id"]): boolean {
-    return users.findIndex(user => user.id === id) !== -1 ? true : false;
-  };
-   
-  return {addUser, getUsers, getUser, deleteUser, updateUser, isExist}; 
-}; 
+  function isExist(id: IUser['id']): boolean {
+    lastCheckedUser = users.find((user) => user.id === id) ?? null;
+    return !!lastCheckedUser;
+  }
 
-createUsersStorage.__isCreated = false;
+  return {
+    addUser, getUsers, getUser, deleteUser, updateUser, isExist,
+  };
+}
+
+createUsersStorage._isCreated = false;
