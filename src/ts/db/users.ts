@@ -1,32 +1,8 @@
 import { v4 as uuid } from 'uuid';
 import { stdout } from 'process';
+import { IUser, IUpdatedUser, IAddedUser, IUsersMethods } from "../interfaces.js"
 
-interface IUpdatedUser {
-    username?: string,
-    age?: number,
-    hobbies?: string[]
-  }
-
-interface IAddedUser {
-  username: string,
-  age: number,
-  hobbies: string[]
-}
-
-interface IUser extends IAddedUser {
-  id: string
-}
-
-type UsersMethods = {
-  addUser: (user: IAddedUser) => IUser,
-  getUsers: () => IUser[],
-  getUser: (id: IUser['id']) => IUser,
-  deleteUser: (id: IUser['id']) => void,
-  updateUser: (id: IUser['id'], newData: IUpdatedUser) => IUser;
-  isExist: (id: IUser['id']) => boolean;
-};
-
-export default function createUsersStorage(): UsersMethods {
+export default function createUsersStorage(): IUsersMethods {
   if (createUsersStorage._isCreated) { stdout.write('\nThe users data base has been allready created.\n'); return; }
   createUsersStorage._isCreated = true;
 
