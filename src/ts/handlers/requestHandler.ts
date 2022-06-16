@@ -2,6 +2,7 @@ import { IncomingMessage, OutgoingMessage, STATUS_CODES } from "http";
 import { IResponse } from "../interfaces.js";
 import getHandler from "./getHandler.js";
 import postHandler from "./postHandler.js";
+import deleteHandler from "./deleteHandler.js";
 import { IUser } from "../interfaces.js";
 
 export default function requestHandler(request: IncomingMessage, resp: any): IResponse {
@@ -36,6 +37,7 @@ export default function requestHandler(request: IncomingMessage, resp: any): IRe
           };
         });
       }; break;
+      case "DELETE": response = deleteHandler(url) ?? response; break;
       default : return { status: 501, statusMes: STATUS_CODES["501"], sendRes: true };    
     }
     return response;    
