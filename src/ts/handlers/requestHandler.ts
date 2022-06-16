@@ -11,8 +11,15 @@ export default function requestHandler(request: IncomingMessage, resp: any): IRe
     switch (method) {
       case "GET" : response = getHandler(url) ?? response; break;
       case "POST": {
-        response = {sendRes: false}
+        if (!/\/api\/users/.test(url)) { break } else { response.sendRes = false } 
         let userData: IUser;
+        request.on("close", () => {
+          if (!userData) {
+            resp.statusCode = 400;
+            resp.statusMessage = `${STATUS_CODES["400"]} : The request's body is probably empty.`;
+            resp.end();
+          }
+        });
         request.on("data", reqData => {
           try {
             userData = JSON.parse(reqData);
@@ -26,7 +33,7 @@ export default function requestHandler(request: IncomingMessage, resp: any): IRe
             resp.statusCode = 500;
             resp.statusMessage = `${STATUS_CODES["500"]} : ${error.message}`;
             resp.end();
-          }
+          };
         });
       }; break;
       default : return { status: 501, statusMes: STATUS_CODES["501"], sendRes: true };    
