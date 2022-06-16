@@ -17,6 +17,7 @@ try {
     if (!sendRes) {
       return;
     };
+    
     res.statusCode = status;
     res.statusMessage = statusMes ?? "";
     if (data) { res.setHeader("Content-type", "aplication/json") }
