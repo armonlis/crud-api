@@ -1,5 +1,9 @@
-import { IAddedUser } from "../interfaces.js";
+import { IAddedUser, IUpdatedUser } from "../interfaces.js";
 
-export default function validateUser(user: IAddedUser): boolean {
-  return typeof user.username === "string" && typeof user.age === "number" && Array.isArray(user.hobbies) ? true : false;
+export default function validateUser(user: IAddedUser | IUpdatedUser, mode: "add" | "update" = "add"): boolean {
+  if (mode === "add") {
+    return typeof user.username === "string" && typeof user.age === "number" && Array.isArray(user.hobbies) ? true : false;
+  }
+  return !!user.username && typeof user.username !== "string" || !!user.age && typeof user.age !== "number" || !!user.hobbies && Array.isArray(user.hobbies) ? false : true;
+  
 };
