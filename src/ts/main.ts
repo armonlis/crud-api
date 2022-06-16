@@ -13,7 +13,10 @@ try {
   stdout.write("\nStarting server...\n");
   usersStorage = createUsersStorage();
   const server = createServer((req, res) => {
-    const { status, statusMes, data } = requestHandler(req);
+    const { status, statusMes, data, sendRes } = requestHandler(req, res);
+    if (!sendRes) {
+      return;
+    };
     res.statusCode = status;
     res.statusMessage = statusMes ?? "";
     if (data) { res.setHeader("Content-type", "aplication/json") }

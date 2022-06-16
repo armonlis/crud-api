@@ -15,9 +15,10 @@ export interface IUser extends IAddedUser {
 };
 
 export interface IResponse {
-  status: number,
+  status?: number,
   statusMes?: string,
   data?: IUser | IUser[] | null
+  sendRes: boolean,
 };
 
 export interface IUsersMethods {

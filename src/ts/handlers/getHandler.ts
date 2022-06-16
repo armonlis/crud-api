@@ -7,7 +7,7 @@ import { STATUS_CODES } from "http";
 export default function getHandler(url: Request["url"]): IResponse | null {
   if (url === "/api/users") { 
     const data = usersStorage.getUsers();
-    return { status: 200, statusMes: STATUS_CODES["200"], data } 
+    return { status: 200, statusMes: STATUS_CODES["200"], data, sendRes: true }; 
   }
   return null;
 };
