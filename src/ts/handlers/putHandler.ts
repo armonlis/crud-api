@@ -1,4 +1,4 @@
-import { usersStorage } from "../main.js";
+import { usersStorage } from "../server.js";
 import { IResponse, IAddedUser } from "../interfaces.js";
 import { STATUS_CODES } from "http";
 import { validate as isValidUUID } from "uuid";
