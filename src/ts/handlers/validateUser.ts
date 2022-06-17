@@ -6,4 +6,4 @@ export default function validateUser(user: IAddedUser | IUpdatedUser, mode: "add
   }
   return !!user.username && typeof user.username !== "string" || !!user.age && typeof user.age !== "number" || !!user.hobbies && Array.isArray(user.hobbies) ? false : true;
   
-};
+}

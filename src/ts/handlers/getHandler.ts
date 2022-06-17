@@ -17,4 +17,4 @@ export default function getHandler(url: Request["url"]): IResponse | null {
     return { status: 200, statusMes: STATUS_CODES["200"], data, sendRes: true };
   }
   return null;
-};
+}

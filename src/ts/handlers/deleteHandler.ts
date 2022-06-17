@@ -13,4 +13,4 @@ export default function deleteHandler(url: Request["url"]): IResponse | null {
     return { status: 200, statusMes: STATUS_CODES["200"], sendRes: true };
   }
   return null;
-};
+}

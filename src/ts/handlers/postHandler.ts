@@ -12,4 +12,4 @@ export default function postHandler(url: Request["url"], userData: IAddedUser ):
     return { status: 201, statusMes: STATUS_CODES["201"], data, sendRes: true };
   }
   return null;
-};
+}

@@ -15,4 +15,4 @@ export default function putHandler(url: Request["url"], userData: IAddedUser): I
     return { status: 200, statusMes: STATUS_CODES["200"], data, sendRes: true };
   }
   return null;
-};
+}

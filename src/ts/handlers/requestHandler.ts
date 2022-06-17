@@ -1,4 +1,4 @@
-import { IncomingMessage, OutgoingMessage, STATUS_CODES } from "http";
+import { IncomingMessage, ServerResponse, STATUS_CODES } from "http";
 import { IResponse } from "../interfaces.js";
 import getHandler from "./getHandler.js";
 import postHandler from "./postHandler.js";
@@ -6,12 +6,12 @@ import deleteHandler from "./deleteHandler.js";
 import putHandler from "./putHandler.js";
 import { IUser } from "../interfaces.js";
 
-export default function requestHandler(request: IncomingMessage, resp: any): IResponse {
+export default function requestHandler(request: IncomingMessage, resp: ServerResponse): IResponse {
   try {
     const { method, url } = request;
     let response: IResponse = { status: 404, statusMes: `${STATUS_CODES["404"]}: The page ${url} was not found.`, sendRes: true };
 
-    function preHandle(method: "POST" | "PUT") {
+    const preHandle = (method: "POST" | "PUT") => {
       let userData: IUser;
       request.on("close", () => {
         if (!userData) {
@@ -23,7 +23,7 @@ export default function requestHandler(request: IncomingMessage, resp: any): IRe
       request.on("data", reqData => {
         try {
           userData = JSON.parse(reqData);
-          const {status, statusMes, data, sendRes} = method === "POST" ? postHandler(url, userData) ?? response : putHandler(url, userData) ?? response;
+          const {status, statusMes, data} = method === "POST" ? postHandler(url, userData) ?? response : putHandler(url, userData) ?? response;
           resp.statusCode = status;
           resp.statusMessage = statusMes ?? "";
           if (data) { resp.setHeader("Content-type", "aplication/json") }
@@ -33,20 +33,20 @@ export default function requestHandler(request: IncomingMessage, resp: any): IRe
           resp.statusCode = 500;
           resp.statusMessage = `${STATUS_CODES["500"]} : ${error.message}`;
           resp.end();
-        };
+        }
       });  
-    };
+    }
 
     switch (method) {
       case "GET" : response = getHandler(url) ?? response; break;
       case "POST": {
         if (/\/api\/users/.test(url)) { response.sendRes = false } else { break } 
         preHandle("POST");
-      }; break;
+      } break;
       case "PUT": {
         if (/\/api\/users/.test(url)) { response.sendRes = false } else { break } 
         preHandle("PUT");
-      }; break;
+      } break;
       case "DELETE": response = deleteHandler(url) ?? response; break;
       default : return { status: 501, statusMes: STATUS_CODES["501"], sendRes: true };    
     }
@@ -54,5 +54,5 @@ export default function requestHandler(request: IncomingMessage, resp: any): IRe
   }
   catch(error) {
     return { status: 500, statusMes: `${STATUS_CODES["500"]} : ${error.message}`, sendRes: true };
-  };
-};
+  }
+}
