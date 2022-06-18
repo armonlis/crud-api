@@ -3,7 +3,7 @@ import { stdout } from 'process';
 import { IUser, IUpdatedUser, IAddedUser, IUsersMethods } from "../interfaces.js"
 
 export default function createUsersStorage(): IUsersMethods {
-  if (createUsersStorage._isCreated) { stdout.write('\nThe users data base has been allready created.\n'); return; }
+  if (createUsersStorage._isCreated) { return createUsersStorage._storage; }
   createUsersStorage._isCreated = true;
 
   const users: IUser[] = [];
@@ -54,3 +54,4 @@ export default function createUsersStorage(): IUsersMethods {
 }
 
 createUsersStorage._isCreated = false;
+createUsersStorage._storage = createUsersStorage();

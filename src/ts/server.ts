@@ -1,13 +1,17 @@
 import { createServer } from "http";
 import requestHandler from './handlers/requestHandler.js';
 import createUsersStorage from './db/users.js';
-import { stdout } from "process";
+import { stdout, pid } from "process";
+import cluster from "cluster";
 
 stdout.write("\nStarting server...\n");
 
 export const usersStorage = createUsersStorage();
 
 const server = createServer((req, res) => {
+    if (cluster.isWorker) {
+      stdout.write(`Worker ${pid} handles a request.`);
+    }
     const { status, statusMes, data, sendRes } = requestHandler(req, res);
     if (!sendRes) {
       return;
