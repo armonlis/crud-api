@@ -5,7 +5,7 @@
   "main": "./src/js/main.js",
   "type": "module",
   "scripts": {
-    "start:dev": "tsc --watch & nodemon",
+    "start:dev": "tsc --watch | nodemon",
     "start:prod": "tsc && eslint --fix ./src/ts/**/* && webpack && node ./dist/server.js",
     "start:multi": "node ./src/js/multiMain.js",
     "lint": "eslint --fix ./src/ts/**/*",

@@ -10,7 +10,7 @@ export const usersStorage = createUsersStorage();
 
 const server = createServer((req, res) => {
     if (cluster.isWorker) {
-      stdout.write(`Worker ${pid} handles a request.`);
+      stdout.write(`\nWorker ${pid} handles a request.\n`);
     }
     const { status, statusMes, data, sendRes } = requestHandler(req, res);
     if (!sendRes) {
