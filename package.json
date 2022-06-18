@@ -9,7 +9,7 @@
     "start:prod": "tsc && eslint --fix ./src/ts/**/* && webpack && node ./dist/server.js",
     "lint": "eslint --fix ./src/ts/**/*",
     "build": "tsc && eslint --fix ./src/ts/**/* && webpack",
-    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest"
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules npx jest --verbose"
   },
   "repository": {
     "type": "git",
