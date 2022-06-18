@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "Node16",
+    "noImplicitAny": true,
+    "alwaysStrict": true,
+    "removeComments": true,
+    "target": "ES6",
+    "outDir": "./src/js",
+  },
+  "include": ["./src/ts/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
