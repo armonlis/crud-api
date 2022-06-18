@@ -62,5 +62,28 @@ describe("The deep test of the method PUT.", () => {
       });
   });
 
-  
+  test("Change the user with the invalid name must receive the error 400", () => {
+    return serv.put(`/api/users/${userId}`).send(JSON.stringify(changeUserNameInvalid)).expect(400);
+  });
+
+  test("Change the user with the invalid age must receive the error 400", () => {
+    return serv.put(`/api/users/${userId}`).send(JSON.stringify(changeUserAgeInvalid)).expect(400);
+  });
+
+  test("Change the user with the invalid hobbies must receive the error 400", () => {
+    return serv.put(`/api/users/${userId}`).send(JSON.stringify(changeUserHobbiesInvalid)).expect(400);
+  });
+
+  test("Change the user with invalid id must receive the error 400", () => {
+    return serv.put(`/api/users/invalidUserId`).send(JSON.stringify(changeUserNameInvalid)).expect(400);
+  });
+
+  test("Change the user with not existing id must receive the error 404", () => {
+    return serv.put(`/api/users/${uuid()}`).send(JSON.stringify(changeUserNameInvalid)).expect(404);
+  });
+
+  test("Change the user with a string in the body against an object must receive the error 500.", () => {
+    return serv.put(`/api/users/${userId}`).send("please change the user").expect(500);
+  });
+
 });
