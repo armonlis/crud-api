@@ -8,7 +8,10 @@ describe("The deep test of the method PUT.", () => {
   const addedUser = { username: "USER", age: 33, hobbies: ["beer", "girls"] };
   const changeUserName = { username: "NEW_NAME" };
   const changeUserAge = { age: 13 };
-  const changeUserHobbies = { hobbies: ["flowers"] }
+  const changeUserHobbies = { hobbies: ["flowers"] };
+  const changeUserNameInvalid = { username: ["USER"] };
+  const changeUserAgeInvalid = { age: {age: 44} };
+  const changeUserHobbiesInvalid = { hobbies: [12, "beer"] };
   let userId;
     
   test("Add new user with valid user object and check returned object.", async () => {
